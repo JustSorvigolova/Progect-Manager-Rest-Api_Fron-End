@@ -1,0 +1,27 @@
+.bg_project_create{
+    background-color: #687fd5;
+    border-radius: 5%;
+}
+.bg_project_color{
+    color: white;
+}
+.button_create{
+    background-color: white;
+    color: white;
+    border-color: white;
+}
+.color_text_field{
+    color: white;
+}
+#bg_card_false{
+    background-color: #ffff;
+    color: #9c27b0;
+
+}
+#bg_card_true{
+     background-color: #1cc719;
+    color: white;
+}
+.link_underline_none{
+    text-decoration: none;
+}
