@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 
-export const Tick = () => {
-    let [state, setState] = useState(0)
+export const Tick = (props) => {
+    let [state, setState] = useState(props.time)
         setTimeout(()=>{
-            setState(state+1)
+            setState(state-1)
         },1000)
     return (
-        <h3>{state}</h3>
+        <span>{state}</span>
     )
 }
 

@@ -8,8 +8,6 @@ import Projects from "./Components/Project-Components/Projects";
 import CreateProject from "./Components/Project-Components/ProjectsCreate";
 import UpdateProject from "./Components/Project-Components/ProjectUpdate";
 import Tasks from "./Components/TaskComponents/Tasks";
-import CreateTask from "./Components/TaskComponents/TaskCreate";
-import TaskUpdate from "./Components/TaskComponents/TaskUpdate";
 import {compose} from "redux";
 import Login from "./Components/Auth-Components/loginPage";
 import Header from "./Components/Header.jsx";
@@ -19,31 +17,30 @@ import {NotFound} from "./utils/NotFound";
 
 
 
+
 const App = ({Aut_Me, isFetching, token_success, username, isAuth, logoutization}) => {
+    let isauth = localStorage.getItem('isAuth')
     useEffect(() => {
         Aut_Me()
     }, [token_success])
      useEffect(() => {
         Aut_Me()
-    }, [isAuth])
+    }, [isauth])
     let Logout = () => {
         logoutization()
     }
     return <>
          { isFetching ? <Preloader/> : null }
-                {   isAuth ?
+                {   isauth ?
                     (<div className="App">
                         <Header isAuth={isAuth} username={username} Logout={Logout}/>
                         <Routes>
                             <Route index element={<Projects isAuth={isAuth}/>}/>
-                            <Route path="/project/:id" element={<Project isAuth={isAuth} />}/>
+                            <Route path="/project/:id" element={<Project />}/>
                             <Route path={"/project/create"} element={<CreateProject/>}/>
                             <Route path={"/project/update/:id"} element={<UpdateProject/>}/>
                             <Route path={'/tasks/'} element={<Tasks/>}/>
-                            <Route path={'/task/create/'} element={<CreateTask/>}/>
-                            <Route path={'/task/update/:id'} element={<TaskUpdate/>}/>
                             <Route path="*" element={<NotFound/>}/>
-
                         </Routes>
 
                     </div>)

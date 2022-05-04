@@ -26,10 +26,10 @@ export const renderTextArea = ({input}) => {
     />)
 }
 
-export const renderText = ({input}) => {
+export const renderText = ({input,value}) => {
     return (
 
-        <TextField color="secondary" {...input} rows="10" cols="40" label="Title"
+        <TextField color="secondary" {...input} rows="10" cols="40" label="Title" value={value}
                    variant="outlined"/>
 
     )
@@ -86,7 +86,7 @@ const CreateProjectForm = (props) => {
                         <h2 className={project_create.bg_project_color}>Start Project</h2>
                     </Grid>
                     <Grid item sm={6} xs={"auto"} lg={3}>
-                        <Field name="title" component={renderText} type='text'/>
+                        <Field defaultValue={'lol'} name="title" component={renderText} type='text'/>
                     </Grid>
                     <Grid item xs={4} lg={2}>
                         <h2 className={project_create.bg_project_color}>End Project</h2>
@@ -148,11 +148,10 @@ const CreateProject = (props) => {
         })
     }
     let username = props.users.map(u => u.username)
-
     return (
         <Grid container display={'flex'} justifyContent={'center'}>
-            {props.create_project_success ? <SuccessfullAlert link={"/"} text={"Project"}/> :
-                <CreateProjectFormReduxForm onSubmit={onSubmit} data={username}/>
+            {props.create_project_success ? <SuccessfullAlert Continue={"Create"} Action={"Created"} link={"/"} text={"Project"}/> :
+                <CreateProjectFormReduxForm  onSubmit={onSubmit} data={username}/>
             }
         </Grid>)
 }

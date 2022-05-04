@@ -4,6 +4,7 @@ import {GetAllProject} from "../../Reducers/projectReducer";
 import {compose} from "redux";
 import {ProjectCards} from "./ProjectCards";
 import Grid from "@mui/material/Grid";
+import {ProjectsEmpty} from "../../utils/ProjectsEmpty";
 
 
 const Projects = ({GetAllProject, project_set_success, isAuth, projects}) => {
@@ -16,9 +17,13 @@ const Projects = ({GetAllProject, project_set_success, isAuth, projects}) => {
     }, [project_set_success || isAuth || projects.length])
 
 
+
     return (
         <Grid container padding={3} justifyContent={"flex-start"}>
-         {project}
+            {projects.length ?project :
+                <ProjectsEmpty/>
+            }
+
         </Grid>
     );
 };

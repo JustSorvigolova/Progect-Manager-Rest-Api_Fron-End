@@ -65,11 +65,14 @@ export const GetOneTask = (id) => async (dispatch) => {
         dispatch(setOneTask("Error"))
     }
 }
-
 export const TaskCreate = (data) => async (dispatch) => {
     const response = await tasksAPI.create_task(data);
     if (response.status === 200 || 201) {
         dispatch(taskCreateSuccess(true))
+        setTimeout(()=>{
+            dispatch(taskCreateSuccess(false))
+        },3000)
+
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
         dispatch(taskCreateSuccess("Error"))
     }
@@ -80,7 +83,7 @@ export const TaskDelete = (id) => async (dispatch) => {
         dispatch(taskDeleteSuccess(true))
         setTimeout(() => {
             dispatch(taskDeleteSuccess(false))
-        }, 1)
+        }, 10)
 
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
         dispatch(taskDeleteSuccess("Error"))
@@ -92,7 +95,7 @@ export const TaskUpdate = (id, data) => async (dispatch) => {
         dispatch(taskUpdateSuccess(true))
         setTimeout(()=>{
             dispatch(taskUpdateSuccess(false))
-        },100)
+        },3000)
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
         dispatch(taskUpdateSuccess("Error"))
     }

@@ -25,3 +25,13 @@
 .link_underline_none{
     text-decoration: none;
 }
+.x_button{
+    display: flex;
+    justify-content: space-between;
+}
+.text_checked_true{
+    text-decoration: line-through;
+}
+.text_checked_false{
+text-decoration: none;
+}

@@ -1,21 +1,47 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {TaskUpdate} from "../../Reducers/taskReducer";
-import {GetAllProject} from "../../Reducers/projectReducer";
-import {Link, useParams} from "react-router-dom";
+import {GetOneProject} from "../../Reducers/projectReducer";
 import {compose} from "redux";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
+import {Checkbox, FormControlLabel, TextField} from "@mui/material";
+import {SuccessTaskUpdateAlert} from "../../utils/SuccessTaskUpdateAlert";
 
+const renderTextUpdate = ({input,value}) => {
+    return (
+        <TextField value={value} color="secondary" {...input} rows="10" cols="40" label="Title"
+                   variant="outlined"/>
 
+    )
+}
+
+const renderCheckbox = ({ input, label}) => (
+  <div>
+    <FormControlLabel
+      control={
+        <Checkbox color={'secondary'} checked={!!input.value} onChange={input.onChange}/>}
+      label={label}
+    />
+  </div>
+)
 const UpdateTaskForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
-            <div>title_task<Field name="title_task" component="input" type="text"/></div>
-            <div>project<Field name="project" component={'input'}/></div>
-            <div>done<Field name="done" component={'input'} type={'checkbox'}/></div>
-            <div>
-                <button>update</button>
-            </div>
+               <Grid padding={1} spacing={2} container justifyContent="space-around" alignItems="center" direction="column">
+                   <Grid item>
+                       <Field name="title_task"   component={renderTextUpdate} type="text"/>
+                   </Grid>
+                   <Grid item>
+                       <Field name="done" label={'Done'}  component={renderCheckbox} type={'checkbox'}/>
+                   </Grid>
+                   <Grid item>
+              <Button  color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
+                            variant="contained"><AddSharpIcon/></Button>
+                   </Grid>
+               </Grid>
         </form>
     )
 }
@@ -25,31 +51,22 @@ const UpdateTaskFormReduxForm = reduxForm({
 })(UpdateTaskForm)
 
 
-const Updatetask = (props) => {
-
-    const {id} = useParams()
-
-    useEffect(() => {
-        props.GetAllProject()
-    }, [props.projects.length])
-
-
+const UpdateTask = (props) => {
+    let id_task = localStorage.getItem('id')
     const onSubmit = (formData) => {
-        props.TaskUpdate(id, formData)
-    }
-    if (props.update_task_success) {
-        return (
-            <>
-                <div>Updated</div>
-                <Link to={'/tasks'}>Tasks</Link>
-            </>
-        )
+        let title_task = formData.title_task ? formData.title_task : localStorage.getItem('title_task')
+        props.TaskUpdate(id_task,{title_task: title_task ,done: formData.done, project: props.project})
     }
     return (
-        <div>
-            <h1>TaskUpdate</h1>
-            <UpdateTaskFormReduxForm onSubmit={onSubmit}/>
-        </div>
+        <>
+            {!props.update_task_success ?
+
+                 <UpdateTaskFormReduxForm onSubmit={onSubmit}/>
+                :
+             <SuccessTaskUpdateAlert/>
+            }
+
+        </>
     )
 }
 
@@ -59,4 +76,4 @@ const mapStateToProps = (state) => ({
     update_task_success: state.task.update_task_success
 })
 
-export default compose(connect(mapStateToProps, {TaskUpdate, GetAllProject}))(Updatetask);
+export default compose(connect(mapStateToProps, {TaskUpdate, GetOneProject}))(UpdateTask);

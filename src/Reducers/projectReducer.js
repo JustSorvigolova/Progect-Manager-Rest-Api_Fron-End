@@ -1,5 +1,5 @@
 import {projectsAPI} from "../Api/api";
-const ERROR = 'ERROR'
+const ERROR = 'project/ERROR'
 const SET_PROJECTS = 'project/SET_PROJECTS'
 const SET_ONE_PROJECT ='project/SET_ONE_PROJECT'
 const PROJECT_CREATE_SUCCESS = 'project/PROJECT_CREATE_SUCCESS'
@@ -11,7 +11,7 @@ let initialState = {
     projects : [],
     project : [],
     project_set_success: false,
-    error: "",
+    error: null,
     create_project_success: false,
     delete_project_success : false,
     update_project_success: false
@@ -30,7 +30,7 @@ export const projectReducer = (state=initialState, action) => {
            }
         case ERROR:
            return {
-               ...state, error: action.payload
+               error: action.payload
            }
         case PROJECT_CREATE_SUCCESS:
            return {
@@ -69,10 +69,10 @@ export const GetAllProject =()=> async (dispatch) => {
 
 export const GetOneProject =(id)=> async (dispatch) => {
   const response = await projectsAPI.get_one_project(id);
-  if (response.status === 200){
-       dispatch(setOneProject(response.data))
-  }else if(response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-      dispatch(setError("error"))
+  if (response.status=== 200){
+      dispatch(setOneProject(response.data))
+  }else if(response.status === 404) {
+      dispatch(setOneProject(response.data))
   }
 }
 /* start,end, developers, supervisor,title,status, description */
@@ -93,6 +93,9 @@ export const ProjectDelete= (id)=> async (dispatch)=>{
        let response = await  projectsAPI.deleteProject(id);
        if(response.status === 200 || 201) {
            dispatch(projectDeleteSuccess(true))
+            setTimeout(()=>{
+               dispatch(projectDeleteSuccess(false))
+           },2000)
        }else if (response.status === 400 || 401 || 403 || 500 || 501) {
           dispatch(projectDeleteSuccess(false))
   }
@@ -102,6 +105,9 @@ export const ProjectUpdate= (id,data)=> async (dispatch)=>{
        let response = await  projectsAPI.updateProject({id, data});
        if(response.status === 200 || 201) {
            dispatch(projectUpdateSuccess(true))
+           setTimeout(()=>{
+               dispatch(projectUpdateSuccess(false))
+           },6000)
        }else if (response.status === 400 || 401 || 403 || 500 || 501) {
           dispatch(projectUpdateSuccess(false))
   }

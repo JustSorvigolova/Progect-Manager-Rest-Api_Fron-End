@@ -12,7 +12,7 @@ import lol from './Header.module.css'
 
 
 const Header = ({username,isAuth,Logout}) => {
-  const [anchorElUser, setAnchorElUser] =useState(null);
+  const [anchorElUser, setAnchorElUser] =useState(false);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -42,7 +42,7 @@ const Header = ({username,isAuth,Logout}) => {
 
           <Button variant="outlined"
                 sx={{ ml: 5, color: 'white', display: 'block' }}
-              ><Link className={lol.linksdelete} to={'/project/create'}>Project Create</Link>
+              ><Link className={lol.linksdelete} to={'/project/create'}>Add Project</Link>
               </Button>
           </Box>
 

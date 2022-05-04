@@ -67,10 +67,12 @@ export const Aut_Me = () => async (dispatch) => {
     let response = await authAPI.me();
     dispatch(setFetching(true))
     if (response.status === 200 || 201) {
+        localStorage.setItem('isAuth', 'true')
         dispatch(setFetching(false))
         dispatch(setAuthMe(response.data, true));
     } else {
         dispatch(setFetching(false))
+        localStorage.setItem('isAuth', 'false')
     }
 }
 export const Get_Users = () => async (dispatch) => {
@@ -94,10 +96,12 @@ export const Loginization = (username, password) => async (dispatch) => {
     dispatch(setFetching(true))
     let response = await authAPI.login(username, password);
     if (response.status === 200 || 201) {
+        localStorage.setItem('isAuth', 'true')
         localStorage.setItem('auth_token', response.data.auth_token)
         dispatch(setFetching(false))
         dispatch(setToken(response.data.auth_token, true, true))
     } else {
+        localStorage.removeItem('isAuth')
         dispatch(setToken(null, false, false))
     }
 }
@@ -106,6 +110,7 @@ export const logoutization = () => async (dispatch) => {
     let response = await authAPI.logout();
     if (response.status === 204 || 201 || 200) {
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('isAuth')
         dispatch(setToken(null, false, false))
         dispatch(setFetching(false))
     } else {
