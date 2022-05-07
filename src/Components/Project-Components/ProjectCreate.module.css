@@ -3,7 +3,8 @@
     border-radius: 5%;
 }
 .bg_project_color{
-    color: white;
+    color: mediumblue;
+    text-align: center;
 }
 .button_create{
     background-color: white;
@@ -27,7 +28,7 @@
 }
 .x_button{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .text_checked_true{
     text-decoration: line-through;

@@ -6,7 +6,7 @@ import {GetAllProject} from "../../Reducers/projectReducer";
 import {compose} from "redux";
 import Grid from "@mui/material/Grid";
 import {renderText} from "../Project-Components/ProjectsCreate";
-import AddSharpIcon from "@mui/icons-material/AddSharp";
+import DoneOutlineOutlinedIcon from '@mui/icons-material/DoneOutlineOutlined';
 import Button from "@mui/material/Button";
 import {SuccessTaskCreateAlert} from "../../utils/SuccessTaskCreateAlert";
 
@@ -18,8 +18,8 @@ const CreateTaskForm = (props) => {
                      <Field name="title_task" component={renderText} type="text"/>
               </Grid>
          <Grid item>
-      <Button  color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
-                            variant="contained"><AddSharpIcon/></Button>
+      <Button  color="success" size="large" type="submit" disabled={props.pristine || props.submitting}
+                            variant="contained"><DoneOutlineOutlinedIcon/></Button>
                         </Grid>
                   </Grid>
         </form>

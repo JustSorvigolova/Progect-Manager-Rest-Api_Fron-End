@@ -5,8 +5,8 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import Modal from "@mui/material/Modal";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
+    position: 'fixed',
+    top: '45%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     p: 4,
@@ -16,7 +16,7 @@ export const ModalProps = (props) => (
         open={props.open} onClose={props.onClose}>
            <Card>
              <Card sx={style}>
-                <div className={x_button.x_button}>
+           <div className={x_button.x_button}>
                 <h2>{props.title}</h2>
    <IconButton  onClick={props.onClick} >
        <CloseOutlinedIcon color={'error'} />

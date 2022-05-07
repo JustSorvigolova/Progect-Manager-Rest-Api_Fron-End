@@ -10,10 +10,10 @@ export const SuccessfullAlert = ({text,link,Action, Continue}) => {
 
      return (
          <Grid container justifyContent="center">
-        <Grid item xs={6} md={8}>
+        <Grid item xs={12}>
     <Box  alignItems="center"   sx={{
-        width: "100%",
-        height: 500}}>
+        minWidth: 400,
+        minHeight: 150}}>
     <Alert className={success.lol}  severity="success">
         <AlertTitle > Success  <strong> You can {Continue} after <Tick time={6}/> seconds</strong> </AlertTitle>
         {text} has been {Action} —<strong><Link to={link}>Check it out!</Link></strong>

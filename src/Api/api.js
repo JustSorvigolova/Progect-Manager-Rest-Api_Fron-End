@@ -60,7 +60,7 @@ export const projectsAPI = {
      deleteProject(id){
         return instance.delete(`project/${id}/`);
     },
-    updateProject({id,data}){
+    updateProject(id,data){
         return instance.put(`project/${id}/`,data);
     },
 }

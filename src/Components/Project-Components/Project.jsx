@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
 import {GetOneProject, ProjectDelete} from "../../Reducers/projectReducer";
 import {TaskDelete} from "../../Reducers/taskReducer";
@@ -10,7 +9,6 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import Box from "@mui/material/Box";
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
 import {
     Card, CardContent,
     Divider,
@@ -25,20 +23,26 @@ import CreateTask from "../TaskComponents/TaskCreate";
 import {ModalProps} from "../../utils/Modal";
 import UpdateTask from "../TaskComponents/TaskUpdate";
 import {CheckedTitleText} from "../../utils/CheckedTitleText";
+import {NotFound} from "../../utils/NotFound";
+import {useParams} from "react-router-dom";
+import UpdateProject from "./ProjectUpdate";
 
 
 const Project = (props) => {
+    const {id} = useParams()
     const [open, setOpen] = useState(false);
+    const [openUpdateProject, setOpenUpdateProject] = useState(false);
+    const OpenUpdate = () => setOpenUpdateProject(true);
+    const CloseUpdate = () => setOpenUpdateProject(false);
     const [openEdit, setOpenEdit] = useState(false);
     const OpenAddTask = () => setOpen(true);
     const CloseAddTask = () => setOpen(false);
-    const OpenEditTask = (id, title_task, done) => {
+    const OpenEditTask = (id, title_task) => {
         setOpenEdit(true);
         localStorage.setItem('id', id)
         localStorage.setItem('title_task', title_task)
     }
     const CloseEditTask = () => setOpenEdit(false);
-    const {id} = useParams()
     useEffect(() => {
         props.GetOneProject(id)
     }, [props.delete_task_success])
@@ -48,7 +52,9 @@ const Project = (props) => {
     useEffect(() => {
         props.GetOneProject(id)
     }, [props.update_task_success])
-
+    useEffect(() => {
+        props.GetOneProject(id)
+    }, [props.update_project_success])
     let Delete_task = (id) => {
         props.TaskDelete(id)
     }
@@ -70,7 +76,9 @@ const Project = (props) => {
         }
     }
     let dev_length = developer_response()
-
+    if (props.project.length === 0) {
+        return <NotFound/>
+    }
     return (
         <Box sx={{width: "100%", height: 600}}>
             {props.delete_project_success ?
@@ -134,6 +142,15 @@ const Project = (props) => {
                                     <ModalProps title={'Add task'} open={open} onClose={CloseAddTask}
                                                 Components_child={<CreateTask project={props.project.title}/>}
                                                 onClick={CloseAddTask}/>
+                                    <ModalProps title={'Update Project'} open={openUpdateProject} onClose={CloseUpdate}
+                                                Components_child={<UpdateProject superv={props.project.supervisor}
+                                                                                 tit={props.project.title}
+                                                                                 star={props.project.start}
+                                                                                 en={props.project.end}
+                                                                                 develop={props.project.developers}
+                                                                                 desc={props.project.description}
+                                                                                 id={id}/>}
+                                                onClick={CloseUpdate}/>
                                 </Grid>
                                 <Grid padding={1} item xs={12}>
                                     <Button onClick={OpenAddTask} variant="outlined"><AddIcon/></Button>
@@ -149,7 +166,7 @@ const Project = (props) => {
                                                 <Grid padding={1} container justifyContent={'space-between'}>
                                                     <Grid item>
                                                         <ListItemText><CheckedTitleText done={u.done}
-                                                            title={u.title_task}/></ListItemText>
+                                                                                        title={u.title_task}/></ListItemText>
                                                     </Grid>
                                                     <Grid item>
                                                         <IconButton onClick={() => Delete_task(u.id)} edge="end"
@@ -164,19 +181,17 @@ const Project = (props) => {
                                                 </Grid>
                                             </Grid>)
                                     }
-
                                 </Grid>
-
                                 <Grid padding={1} justifyContent={'center'} container>
                                     <Grid padding={1} item>
                                         <Button variant={'outlined'} onClick={() => Delete_projects(id)}
                                                 color={"error"}>Remove
-                                            <DeleteForeverOutlinedIcon sx={{ fontSize: 30 }}/></Button>
+                                            <DeleteForeverOutlinedIcon sx={{fontSize: 30}}/></Button>
                                     </Grid>
                                     <Grid item padding={1}>
-                                        <Button variant={'outlined'}
+                                        <Button onClick={OpenUpdate} variant={'outlined'}
                                                 color={"secondary"}>Update<EditOutlinedIcon
-                                            sx={{ fontSize: 30 }}/></Button>
+                                            sx={{fontSize: 30}}/></Button>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -203,6 +218,7 @@ const mapStateToProps = (state) => ({
         project: state.project.project,
         tasks: state.project.project.task,
         update_task_success: state.task.update_task_success,
+        update_project_success: state.project.update_project_success,
         project_set_success: state.project.project_set_success,
         delete_task_success: state.task.delete_task_success,
         delete_project_success: state.project.delete_project_success
@@ -215,25 +231,3 @@ export default compose(
             GetOneProject, ProjectDelete, TaskDelete
         }
     ))(Project)
-
-//
-//     {/*    <div>*/
-// }
-// {/*        <button onClick={Delete_projects}>delete</button>*/
-// }
-// {/*        <section>*/
-// }
-// {/*            <Link to={'/project/update/'+id}><button>Update</button></Link>*/
-// }
-// {/* </section>*/
-// }
-// {/*        <section>*/
-//
-//
-//
-
-// {/*        </section>*/
-// }
-
-//
-// {/*        </div>*/

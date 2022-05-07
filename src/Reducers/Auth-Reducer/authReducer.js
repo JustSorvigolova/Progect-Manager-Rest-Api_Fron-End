@@ -76,7 +76,6 @@ export const Aut_Me = () => async (dispatch) => {
     }
 }
 export const Get_Users = () => async (dispatch) => {
-    dispatch(setFetching(true))
     let response = await authAPI.getUsers();
     if (response.status === 200 || 201) {
         dispatch(setUsers(response.data));

@@ -3,17 +3,15 @@ import './App.css';
 import {connect} from "react-redux";
 import RegisterUser from "./Components/Auth-Components/Register_new_user";
 import {Aut_Me, logoutization} from "./Reducers/Auth-Reducer/authReducer";
-import Project from "./Components/Project-Components/Project";
 import Projects from "./Components/Project-Components/Projects";
-import CreateProject from "./Components/Project-Components/ProjectsCreate";
 import UpdateProject from "./Components/Project-Components/ProjectUpdate";
-import Tasks from "./Components/TaskComponents/Tasks";
 import {compose} from "redux";
 import Login from "./Components/Auth-Components/loginPage";
 import Header from "./Components/Header.jsx";
 import {Route, Routes} from "react-router-dom";
 import {Preloader} from "./utils/Preloader";
 import {NotFound} from "./utils/NotFound";
+import Project from "./Components/Project-Components/Project";
 
 
 
@@ -30,16 +28,15 @@ const App = ({Aut_Me, isFetching, token_success, username, isAuth, logoutization
         logoutization()
     }
     return <>
-         { isFetching ? <Preloader/> : null }
-                {   isauth ?
+        {isFetching ? <Preloader/> :
+            <>
+            {
+                isauth ?
                     (<div className="App">
                         <Header isAuth={isAuth} username={username} Logout={Logout}/>
                         <Routes>
                             <Route index element={<Projects isAuth={isAuth}/>}/>
-                            <Route path="/project/:id" element={<Project />}/>
-                            <Route path={"/project/create"} element={<CreateProject/>}/>
-                            <Route path={"/project/update/:id"} element={<UpdateProject/>}/>
-                            <Route path={'/tasks/'} element={<Tasks/>}/>
+                            <Route path="/project/:id" element={<Project/>}/>
                             <Route path="*" element={<NotFound/>}/>
                         </Routes>
 
@@ -51,7 +48,9 @@ const App = ({Aut_Me, isFetching, token_success, username, isAuth, logoutization
                             <Route path="/register" element={<RegisterUser/>}/>
                             <Route path="*" element={<NotFound/>}/>
                         </Routes></div>)
-                }
+            }
+            </>
+        }
     </>
 }
 const mapStateToProps = (state) => ({

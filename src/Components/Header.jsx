@@ -34,16 +34,12 @@ const Header = ({username,isAuth,Logout}) => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-          <Link className={lol.linksdelete} to={'/'}>Project Manager</Link>
+          <Link className={lol.linksdelete} to={'/'}>Koychai</Link>
           </Typography>
 
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 
-          <Button variant="outlined"
-                sx={{ ml: 5, color: 'white', display: 'block' }}
-              ><Link className={lol.linksdelete} to={'/project/create'}>Add Project</Link>
-              </Button>
           </Box>
 
 

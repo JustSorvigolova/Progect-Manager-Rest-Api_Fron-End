@@ -10,7 +10,6 @@ const Tasks = ({ tasks,GetAllTasks}) => {
     return (
         <div>
             {tasks.map(u=> <div key={u.id}>{u.title_task}</div> )}
-
         </div>
     );
 };

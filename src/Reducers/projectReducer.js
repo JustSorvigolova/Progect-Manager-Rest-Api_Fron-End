@@ -101,8 +101,8 @@ export const ProjectDelete= (id)=> async (dispatch)=>{
   }
 }
 
-export const ProjectUpdate= (id,data)=> async (dispatch)=>{
-       let response = await  projectsAPI.updateProject({id, data});
+export const ProjectUpdate= (id, data)=> async (dispatch)=>{
+       let response = await  projectsAPI.updateProject(id, data);
        if(response.status === 200 || 201) {
            dispatch(projectUpdateSuccess(true))
            setTimeout(()=>{

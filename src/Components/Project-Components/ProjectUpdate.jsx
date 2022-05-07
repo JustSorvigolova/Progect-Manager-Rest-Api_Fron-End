@@ -3,34 +3,50 @@ import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {GetOneProject, ProjectUpdate} from "../../Reducers/projectReducer";
 import "react-widgets/styles.css";
-import {renderMultiselect, renderTextArea} from "./ProjectsCreate";
-import {useParams} from "react-router-dom";
+import {renderDatepicker, renderMultiselect, renderSupervisor, renderText, renderTextArea} from "./ProjectsCreate";
 import {Get_Users} from "../../Reducers/Auth-Reducer/authReducer";
 import {compose} from "redux";
-
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import DoneOutlineOutlinedIcon from '@mui/icons-material/DoneOutlineOutlined';
+import {DateFormats} from "../../utils/DateFormats";
+import {renderCheckbox} from "../TaskComponents/TaskUpdate";
+import {SuccessfullAlert} from "../../utils/SuccessfullAlert";
 
 const UpdateProjectForm = (props) => {
-        return (
-         <form  onSubmit={props.handleSubmit}>
-        <div><Field  name="start"  component="input"   type="date"/></div>
-        <div><Field name="end"  component="input" type='date'/></div>
-        <div>developers<Field  name="developers" component={renderMultiselect}  data={props.data} /></div>
-        <div>supervisor<Field  name="supervisor"  type={'text'} component="input"/></div>
-        <div>title<Field name="title" placeholder={props.place.title}   component="input"  type='text'/></div>
-         <div>status<Field  name="status"  component="input" type={'checkbox'}/></div>
-        <div><Field  name="description" placeholder={props.place.description}  component={renderTextArea}/></div>
-          <div>
-              <section>
-       <button type="submit"  disabled={props.pristine || props.submitting}>
-          Update
-        </button>
-        <button type="button" disabled={props.pristine || props.submitting} onClick={props.reset}>
-          Clear
-        </button>
-           </section>
-          </div>
+return (<form onSubmit={props.handleSubmit}>
+            <Grid spacing={1} container justifyContent="center" alignItems="center" direction="column">
+                    <Grid item sm={12} xs={"auto"} lg={12}>
+                        <Field  name="title" component={renderText} type='text'/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field id={'start'} name="start" component={renderDatepicker}/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field name="end" component={renderDatepicker}/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field name="supervisor" textField={"username"} data={props.data}
+                               component={renderSupervisor}/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field name="developers" component={renderMultiselect} data={props.data}/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field name="status" label={'status'} component={renderCheckbox} type={'checkbox'}/>
+                    </Grid>
+                    <Grid item sm={4} xs={"auto"}>
+                        <Field id="outlined-basic" label="Outlined" variant="outlined" name="description"
+                               type={'textarea'} component={renderTextArea}/>
+                    </Grid>
+                <Grid container padding={1} justifyContent={"space-evenly"}>
+                    <Button padding={1} color="success" size="large" type="submit"
+                            disabled={props.pristine || props.submitting}
+                            variant="contained"><DoneOutlineOutlinedIcon/></Button>
+            </Grid>
+            </Grid>
         </form>
- )
+    )
 }
 
 const UpdateProjectFormReduxForm = reduxForm({
@@ -38,34 +54,58 @@ const UpdateProjectFormReduxForm = reduxForm({
 })(UpdateProjectForm)
 
 
-const UpdateProject= (props) => {
- useEffect(()=>{
-        props.Get_Users()
-    },[props.users.length])
+const UpdateProject = ({
+                           id,
+                           users,
+                           Get_Users,
+                           ProjectUpdate,
+                           star,
+                           en,
+                           superv,
+                           tit,
+                           develop,
+                           desc,
+                           update_project_success
+                       }) => {
+    useEffect(() => {
+        Get_Users()
+    }, [users.length])
 
-     useEffect(()=>{
-        props.GetOneProject(id)
-    },[props.project.length])
+    let username = users.map(u => u.username)
+    const onSubmit = (formData) => {
+        let start = formData.start ? DateFormats(formData.start) : star
+        let end = formData.end ? DateFormats(formData.end) : en
+        let supervisor = formData.supervisor ? formData.supervisor : superv
+        let title = formData.title ? formData.title : tit
+        let developers = [formData.developers].length === [develop].length ? develop : formData.developers
+        let description = formData.description ? formData.description : desc
+        ProjectUpdate(id,
+            {
+                start: start,
+                end: end,
+                status: formData.status,
+                description: description,
+                title: title,
+                supervisor: supervisor,
+                developers: developers
+            }
+        )
+    }
+    return (
+        <Grid container display={'flex'} justifyContent={'center'}>
+            { !update_project_success?
+                <UpdateProjectFormReduxForm data={username} onSubmit={onSubmit}/>
+                :
+                <SuccessfullAlert text={'Project'} Continue={'update'} link={'/'} Action={'Updated'}/>
+            }
 
-    const {id} = useParams()
-
-    const onSubmit = (formData) =>{
-        props.ProjectUpdate(id,formData)
-        }
-    let username = props.users.map(u=>u.username)
-        return(
-           <div>
-            <h1>Project Update</h1>
-            <UpdateProjectFormReduxForm place={props.project} data={username}   onSubmit={onSubmit}/>
-           </div>
+       </Grid>
     )
 }
 
-const mapStateToProps =(state)=>({
-    project: state.project.project,
-    users :state.auth.users,
+const mapStateToProps = (state) => ({
+    users: state.auth.users,
+    update_project_success: state.project.update_project_success
 })
-
-
 export default compose(
-    connect(mapStateToProps,{GetOneProject,ProjectUpdate,Get_Users}))(UpdateProject);
+    connect(mapStateToProps, {GetOneProject, ProjectUpdate, Get_Users}))(UpdateProject);

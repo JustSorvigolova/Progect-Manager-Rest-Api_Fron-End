@@ -6,7 +6,7 @@ import {GetOneProject} from "../../Reducers/projectReducer";
 import {compose} from "redux";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import AddSharpIcon from "@mui/icons-material/AddSharp";
+import DoneOutlineOutlinedIcon from '@mui/icons-material/DoneOutlineOutlined';
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {SuccessTaskUpdateAlert} from "../../utils/SuccessTaskUpdateAlert";
 
@@ -18,14 +18,12 @@ const renderTextUpdate = ({input,value}) => {
     )
 }
 
-const renderCheckbox = ({ input, label}) => (
-  <div>
+export const renderCheckbox = ({ input, label}) => (
     <FormControlLabel
       control={
-        <Checkbox color={'secondary'} checked={!!input.value} onChange={input.onChange}/>}
+        <Checkbox color={'success'} checked={!!input.value} onChange={input.onChange}/>}
       label={label}
     />
-  </div>
 )
 const UpdateTaskForm = (props) => {
     return (
@@ -38,8 +36,8 @@ const UpdateTaskForm = (props) => {
                        <Field name="done" label={'Done'}  component={renderCheckbox} type={'checkbox'}/>
                    </Grid>
                    <Grid item>
-              <Button  color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
-                            variant="contained"><AddSharpIcon/></Button>
+              <Button  color="success" size="large" type="submit" disabled={props.pristine || props.submitting}
+                            variant="contained"><DoneOutlineOutlinedIcon/></Button>
                    </Grid>
                </Grid>
         </form>
@@ -60,7 +58,6 @@ const UpdateTask = (props) => {
     return (
         <>
             {!props.update_task_success ?
-
                  <UpdateTaskFormReduxForm onSubmit={onSubmit}/>
                 :
              <SuccessTaskUpdateAlert/>
