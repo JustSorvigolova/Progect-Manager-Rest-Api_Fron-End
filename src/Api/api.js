@@ -96,7 +96,7 @@ export const commentsAPI = {
      delete_comment(id){
         return instance.delete(`comment/${id}/`);
     },
-    update_comment({id,data}){
+    update_comment({id, data}){
         return instance.put(`comment/${id}/`,data);
     },
 }

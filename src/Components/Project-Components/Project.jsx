@@ -9,14 +9,7 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import Box from "@mui/material/Box";
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import {
-    Card, CardContent,
-    Divider,
-    IconButton,
-    List,
-    ListItemText,
-    Typography
-} from "@mui/material";
+import {Card, CardContent, Divider, IconButton, List, ListItemText, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import {SuccessDeletelAlert} from "../../utils/SuccessDeleteAlert";
 import CreateTask from "../TaskComponents/TaskCreate";
@@ -26,7 +19,9 @@ import {CheckedTitleText} from "../../utils/CheckedTitleText";
 import {NotFound} from "../../utils/NotFound";
 import {useParams} from "react-router-dom";
 import UpdateProject from "./ProjectUpdate";
-
+import {CommentCreate, CommentDelete, GetAllComments} from "../../Reducers/commentReducer";
+import {Comments} from "../CommentComponents/Comments";
+import proj from './ProjectCreate.module.css'
 
 const Project = (props) => {
     const {id} = useParams()
@@ -55,6 +50,18 @@ const Project = (props) => {
     useEffect(() => {
         props.GetOneProject(id)
     }, [props.update_project_success])
+    useEffect(() => {
+        props.GetAllComments()
+    }, [props.comments.length])
+    useEffect(() => {
+        props.GetAllComments()
+    }, [props.update_comment_success])
+    useEffect(() => {
+        props.GetAllComments()
+    }, [props.delete_comment_success])
+    useEffect(() => {
+        props.GetAllComments()
+    }, [props.create_comment_success])
     let Delete_task = (id) => {
         props.TaskDelete(id)
     }
@@ -62,9 +69,7 @@ const Project = (props) => {
     let Delete_projects = () => {
         props.ProjectDelete(id)
     }
-
     let developers = new Array(props.project.developers).join()
-
     let developer_response = () => {
         if (developers.length / 2 > 30) {
             let data = developers.length / 2 - 3
@@ -80,16 +85,17 @@ const Project = (props) => {
         return <NotFound/>
     }
     return (
-        <Box sx={{width: "100%", height: 600}}>
+        <Box sx={{width: "100%", minHeight: 600}}>
             {props.delete_project_success ?
                 <SuccessDeletelAlert/>
                 :
-                <Grid padding={2} container justifyContent="center" alignItems="center">
-                    <Grid item xs={6}>
-                        <Card>
+                <Grid spacing={1} padding={1} container justifyContent="center" alignItems="top">
+                    <Grid item xs={12} md={6}>
+                        <Card id={proj.bg_card_false}>
                             <Grid container alignItems="center" justifyContent="center">
                                 <Grid item xs={12}>
-                                    <h1>{props.project.title}</h1>
+                                    <h2>{props.project.title}</h2>
+                                    <hr/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <h3>Supervisor: {props.project.supervisor}</h3>
@@ -101,12 +107,14 @@ const Project = (props) => {
                                     <Grid item sm={6} xs={"auto"}>
                                         <Grid item xs={"auto"}><strong> End:</strong> {props.project.end}</Grid>
                                     </Grid>
+
                                 </Grid>
+
                                 <Grid item xs={12}>
                                     <Divider>Description</Divider>
                                 </Grid>
 
-                                <Grid item sm={11} xs={"auto"}>
+                                <Grid item sm={12} xs={"auto"}>
                                     <CardContent>
                                         <Typography paragraph variant="body2">
                                             {props.project.description}
@@ -133,7 +141,6 @@ const Project = (props) => {
                                         </CardContent>
                                     </Grid>
                                 }
-
                                 <Grid item xs={12}>
                                     <Divider>Tasks</Divider>
                                     <ModalProps title={'Update task'} open={openEdit} onClose={CloseEditTask}
@@ -153,7 +160,7 @@ const Project = (props) => {
                                                 onClick={CloseUpdate}/>
                                 </Grid>
                                 <Grid padding={1} item xs={12}>
-                                    <Button onClick={OpenAddTask} variant="outlined"><AddIcon/></Button>
+                                    <Button onClick={OpenAddTask} color={'secondary'} variant="outlined"><AddIcon/></Button>
                                 </Grid>
                                 <Grid justifyContent={"start"} container>
                                     {!props.tasks ?
@@ -171,16 +178,19 @@ const Project = (props) => {
                                                     <Grid item>
                                                         <IconButton onClick={() => Delete_task(u.id)} edge="end"
                                                                     aria-label="delete">
-                                                            <DeleteOutlineOutlinedIcon/></IconButton>
+                                                            <DeleteOutlineOutlinedIcon color={'error'}/></IconButton>
                                                         <IconButton
                                                             onClick={() => OpenEditTask(u.id, u.title_task)}
                                                             edge="end" aria-label="update">
-                                                            <EditOutlinedIcon/>
+                                                            <EditOutlinedIcon color={'secondary'}/>
                                                         </IconButton>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>)
                                     }
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <hr/>
                                 </Grid>
                                 <Grid padding={1} justifyContent={'center'} container>
                                     <Grid padding={1} item>
@@ -198,12 +208,17 @@ const Project = (props) => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={6}>
-                        <Grid container>
-                            <Card>
-
-                            </Card>
-                        </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Card>
+                            <Comments CommentCreate={props.CommentCreate}
+                                      CommentDelete={props.CommentDelete}
+                                      update_comment_success={props.update_comment_success}
+                                      delete_comment_success={props.delete_comment_success}
+                                      create_comment_success={props.create_comment_success}
+                                      comments={props.comments} id_project={id}
+                                      project={props.project.title}
+                                      currentUserName={props.currentUserName}/>
+                        </Card>
                     </Grid>
 
                 </Grid>
@@ -221,13 +236,18 @@ const mapStateToProps = (state) => ({
         update_project_success: state.project.update_project_success,
         project_set_success: state.project.project_set_success,
         delete_task_success: state.task.delete_task_success,
-        delete_project_success: state.project.delete_project_success
+        delete_project_success: state.project.delete_project_success,
+        comments: state.comment.comments,
+        update_comment_success: state.comment.update_comment_success,
+        delete_comment_success: state.comment.delete_comment_success,
+        create_comment_success: state.comment.create_comment_success
     }
 )
 
 export default compose(
     connect(mapStateToProps,
         {
-            GetOneProject, ProjectDelete, TaskDelete
+            GetOneProject, ProjectDelete, TaskDelete,
+            CommentCreate, CommentDelete, GetAllComments
         }
     ))(Project)

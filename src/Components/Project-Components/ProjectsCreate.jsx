@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {ProjectCreate} from "../../Reducers/projectReducer";
 import "react-widgets/styles.css";
 import Multiselect from "react-widgets/Multiselect";
-import {Get_Users} from "../../Reducers/Auth-Reducer/authReducer";
+import {Get_Users} from "../../Reducers/authReducer";
 import {compose} from "redux";
 import {TextareaAutosize, TextField} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -102,7 +102,7 @@ const CreateProjectForm = (props) => {
                                type={'textarea'} component={renderTextArea}/>
                     </Grid>
                      <Grid container padding={1} justifyContent={"space-evenly"}>
-                        <Button padding={1} color="success" size="large" type="submit" disabled={props.pristine || props.submitting}
+                        <Button padding={1} color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
                             variant="contained"><DoneOutlineOutlinedIcon/></Button>
                     </Grid>
 

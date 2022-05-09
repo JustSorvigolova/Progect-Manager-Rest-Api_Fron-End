@@ -6,9 +6,10 @@ import project_card from './ProjectCreate.module.css'
 import {Link} from "react-router-dom";
 
 function CircularProgressWithLabel(props) {
+    let color_circle = props.status ? project_card.color_circle_true : project_card.color_circle_false
     return (
         <Box sx={{position: 'relative', display: 'inline-flex'}}>
-            <CircularProgress color={"secondary"} variant="determinate" {...props} />
+            <CircularProgress id={color_circle} size={60} color={"secondary"} variant="determinate" {...props} />
             <Box
                 sx={{
                     top: 0,
@@ -32,7 +33,6 @@ function CircularProgressWithLabel(props) {
 export const ProjectCards = (props) => {
     let bg_card = props.status ? project_card.bg_card_true : project_card.bg_card_false
     let status = props.status ? "Completed" : "Uncompleted"
-
     let tasks = props.task.map(t => {
         if (t.project === props.id && t.done === true) {
             return 1
@@ -57,11 +57,11 @@ export const ProjectCards = (props) => {
 
 
     return (
-        <Box sx={{minWidth: 350}} padding={3}>
+        <Box sx={{minWidth: 340}} padding={2}>
             <Link className={project_card.link_underline_none} to={"/project/" + props.id}>
                 <Card id={bg_card}>
-                    <Typography component="span" sx={{fontSize: 35}} gutterBottom>
-                        <div>{props.title}</div>
+                    <Typography component="span"  gutterBottom>
+                        <h1>{props.title}</h1>
                     </Typography>
                     <Typography component="span">
                         <Grid container justifyContent={"space-around"}>
@@ -75,7 +75,7 @@ export const ProjectCards = (props) => {
                         </Grid>
                     </Typography>
                     <Typography component="span" variant="body2">
-                        <CircularProgressWithLabel value={procent}/>
+                        <CircularProgressWithLabel status={props.status} value={procent}/>
                     </Typography>
                     <Typography component="span" variant="body1">
                         <Grid container>

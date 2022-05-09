@@ -1,4 +1,4 @@
-import {authAPI} from "../../Api/api";
+import {authAPI} from "../Api/api";
 
 const SET_ME = 'auth/SET_ME'
 const REGISTER_NEW_USER = 'auth/REGISTER_NEW_USER'
@@ -64,12 +64,13 @@ const setFetching = (payload) => ({type: ISFETCHING, payload: payload})
 /* ----------------------  THUNKS ----------------------------------------------*/
 
 export const Aut_Me = () => async (dispatch) => {
-    let response = await authAPI.me();
     dispatch(setFetching(true))
+    let response = await authAPI.me();
     if (response.status === 200 || 201) {
         localStorage.setItem('isAuth', 'true')
         dispatch(setFetching(false))
         dispatch(setAuthMe(response.data, true));
+
     } else {
         dispatch(setFetching(false))
         localStorage.setItem('isAuth', 'false')

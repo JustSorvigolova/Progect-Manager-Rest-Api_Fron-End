@@ -8,8 +8,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import {Link} from "react-router-dom";
-import {connect} from "react-redux";
-import { Loginization} from "../../Reducers/Auth-Reducer/authReducer";
 
 const validate = values => {
     const errors = {}
@@ -116,7 +114,7 @@ const LoginReduxForm = reduxForm({
 })(LoginForm)
 
 
-const Login = ({ Loginization}) => {
+export const Login = ({ Loginization}) => {
     const onSubmit = (formData) => {
         Loginization(formData.username, formData.password)
     }
@@ -127,6 +125,3 @@ const Login = ({ Loginization}) => {
         </div>
     )
 }
-
-
-export default connect(null, {Loginization})(Login);

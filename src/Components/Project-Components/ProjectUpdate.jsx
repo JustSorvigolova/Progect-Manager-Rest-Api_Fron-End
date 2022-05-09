@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {GetOneProject, ProjectUpdate} from "../../Reducers/projectReducer";
 import "react-widgets/styles.css";
 import {renderDatepicker, renderMultiselect, renderSupervisor, renderText, renderTextArea} from "./ProjectsCreate";
-import {Get_Users} from "../../Reducers/Auth-Reducer/authReducer";
+import {Get_Users} from "../../Reducers/authReducer";
 import {compose} from "redux";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -40,7 +40,7 @@ return (<form onSubmit={props.handleSubmit}>
                                type={'textarea'} component={renderTextArea}/>
                     </Grid>
                 <Grid container padding={1} justifyContent={"space-evenly"}>
-                    <Button padding={1} color="success" size="large" type="submit"
+                    <Button padding={1} color="secondary" size="large" type="submit"
                             disabled={props.pristine || props.submitting}
                             variant="contained"><DoneOutlineOutlinedIcon/></Button>
             </Grid>

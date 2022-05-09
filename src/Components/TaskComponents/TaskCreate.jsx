@@ -18,7 +18,7 @@ const CreateTaskForm = (props) => {
                      <Field name="title_task" component={renderText} type="text"/>
               </Grid>
          <Grid item>
-      <Button  color="success" size="large" type="submit" disabled={props.pristine || props.submitting}
+      <Button  color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
                             variant="contained"><DoneOutlineOutlinedIcon/></Button>
                         </Grid>
                   </Grid>

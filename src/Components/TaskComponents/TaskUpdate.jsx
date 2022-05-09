@@ -21,7 +21,7 @@ const renderTextUpdate = ({input,value}) => {
 export const renderCheckbox = ({ input, label}) => (
     <FormControlLabel
       control={
-        <Checkbox color={'success'} checked={!!input.value} onChange={input.onChange}/>}
+        <Checkbox color={'secondary'} checked={!!input.value} onChange={input.onChange}/>}
       label={label}
     />
 )
@@ -36,7 +36,7 @@ const UpdateTaskForm = (props) => {
                        <Field name="done" label={'Done'}  component={renderCheckbox} type={'checkbox'}/>
                    </Grid>
                    <Grid item>
-              <Button  color="success" size="large" type="submit" disabled={props.pristine || props.submitting}
+              <Button  color="secondary" size="large" type="submit" disabled={props.pristine || props.submitting}
                             variant="contained"><DoneOutlineOutlinedIcon/></Button>
                    </Grid>
                </Grid>

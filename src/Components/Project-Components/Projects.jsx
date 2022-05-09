@@ -13,13 +13,15 @@ import Fab from "@mui/material/Fab";
 const styles = {
     position: 'fixed',
     top: '85%',
-    left: '95%',
+    left: '96%',
     transform: 'translate(-50%, -50%)',
+    color: '#9c27b0',
+    backgroundColor: '#ffffff',
     p: 4,
 };
 
 
-const Projects = ({GetAllProject, project_set_success, isAuth, projects,create_project_success}) => {
+const Projects = ({GetAllProject, project_set_success, isAuth, projects, create_project_success}) => {
     const [openCreate, setOpenCreate] = useState(false);
     const OpenCreateProject = () => setOpenCreate(true);
     const CloseCreateProject = () => setOpenCreate(false);
@@ -37,19 +39,19 @@ const Projects = ({GetAllProject, project_set_success, isAuth, projects,create_p
 
     return (
         <>
-            <Fab onClick={OpenCreateProject} sx={styles} color={'success'} aria-label="add">
-        <AddIcon  />
+            <Fab onClick={OpenCreateProject} sx={styles}  aria-label="add">
+                <AddIcon/>
             </Fab>
             <ModalProps title={'Create Project'} open={openCreate} onClose={CloseCreateProject}
-                                                Components_child={<CreateProject/>}
-                                                onClick={CloseCreateProject}/>
-        <Grid container padding={3} justifyContent={"flex-start"}>
-            {projects.length ? project :
-                <ProjectsEmpty/>
-            }
+                        Components_child={<CreateProject/>}
+                        onClick={CloseCreateProject}/>
+            <Grid container padding={3} justifyContent={"center"}>
+                {projects.length ? project :
+                    <ProjectsEmpty/>
+                }
 
-        </Grid>
-            </>
+            </Grid>
+        </>
     );
 };
 

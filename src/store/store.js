@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from "redux-thunk";
 import { reducer as formReducer } from 'redux-form'
-import {authReduser} from "../Reducers/Auth-Reducer/authReducer";
+import {authReduser} from "../Reducers/authReducer";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {projectReducer} from "../Reducers/projectReducer";
 import {tasksReducer} from "../Reducers/taskReducer";

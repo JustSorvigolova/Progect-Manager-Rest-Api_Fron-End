@@ -8,8 +8,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import {Link} from "react-router-dom";
-import {connect} from "react-redux";
-import {Register_New_User} from "../../Reducers/Auth-Reducer/authReducer";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
@@ -118,7 +116,7 @@ const RegisterReduxForm = reduxForm({
 
 
 
-const RegisterUser= ({Register_New_User,register_success}) => {
+export const RegisterUser= ({Register_New_User,register_success}) => {
     const onSubmit = (formData) =>{
         Register_New_User(formData.username,formData.password)
     }
@@ -138,15 +136,6 @@ const RegisterUser= ({Register_New_User,register_success}) => {
                 :
                     <RegisterReduxForm onSubmit={onSubmit}/>
                 }
-
-
             </div>
-
-
     )
 }
-const mapStateToProps =(state)=>({
-    isAuth: state.auth.isAuth,
-    register_success: state.auth.register_success
-})
-export default connect(mapStateToProps,{Register_New_User})(RegisterUser);

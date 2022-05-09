@@ -1,0 +1,26 @@
+.comments {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.comments-title {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.DeletePointer{
+  cursor: pointer;
+}
+.EditPointer{
+  cursor: pointer;
+}
+#bg_comments{
+  background-color: black;
+}
+#color_comment{
+  color: #000000;
+}
+#color_comment_username{
+  color: #000000;
+  font-size: 25px;
+}
