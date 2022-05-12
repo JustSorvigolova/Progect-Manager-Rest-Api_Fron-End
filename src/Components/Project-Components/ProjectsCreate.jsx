@@ -131,6 +131,13 @@ const CreateProject = (props) => {
             supervisor: formData.supervisor,
             developers: formData.developers
         })
+        console.log( {start: start,
+            end: end,
+            description: formData.description,
+            title: formData.title,
+            supervisor: formData.supervisor,
+            developers: formData.developers
+        })
     }
     let username = props.users.map(u => u.username)
     return (

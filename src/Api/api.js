@@ -30,10 +30,10 @@ let instance = axios.default.create({
 
 export const authAPI = {
     me(){
-        return instance_to_auth.get('users/me');
+        return instance_to_auth.get('users/me/');
     },
     getUsers(){
-        return instance_to_auth.get('users/');
+        return instance_to_auth.get('users');
     },
     login(username,password){
         return instance_to_login.post(`token/login`, {username,password});
@@ -88,13 +88,13 @@ export const commentsAPI = {
         return instance.get('comment/');
     },
     get_one_comment(id){
-        return instance.get(`comment/${id}/`);
+        return instance.get(`comment/${id}`);
     },
     create_comment(data){
         return instance.post(`comment/`, data);
     },
      delete_comment(id){
-        return instance.delete(`comment/${id}/`);
+        return instance.delete(`comment/${id}`);
     },
     update_comment({id, data}){
         return instance.put(`comment/${id}/`,data);

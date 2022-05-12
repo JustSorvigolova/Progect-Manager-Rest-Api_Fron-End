@@ -1,5 +1,4 @@
 import {authAPI} from "../Api/api";
-
 const SET_ME = 'auth/SET_ME'
 const REGISTER_NEW_USER = 'auth/REGISTER_NEW_USER'
 const TOKEN = 'auth/TOKEN'
@@ -64,13 +63,11 @@ const setFetching = (payload) => ({type: ISFETCHING, payload: payload})
 /* ----------------------  THUNKS ----------------------------------------------*/
 
 export const Aut_Me = () => async (dispatch) => {
-    dispatch(setFetching(true))
     let response = await authAPI.me();
     if (response.status === 200 || 201) {
-        localStorage.setItem('isAuth', 'true')
         dispatch(setFetching(false))
+        localStorage.setItem('isAuth', 'true')
         dispatch(setAuthMe(response.data, true));
-
     } else {
         dispatch(setFetching(false))
         localStorage.setItem('isAuth', 'false')
@@ -79,16 +76,22 @@ export const Aut_Me = () => async (dispatch) => {
 export const Get_Users = () => async (dispatch) => {
     let response = await authAPI.getUsers();
     if (response.status === 200 || 201) {
+         dispatch(setFetching(false))
         dispatch(setUsers(response.data));
+    }else {
         dispatch(setFetching(false))
+        dispatch(setUsers(null))
     }
 }
 export const Register_New_User = (username, password) => async (dispatch) => {
-    dispatch(setFetching(true))
+     dispatch(setFetching(true))
     let response = await authAPI.registration(username, password);
     if (response.status === 201 || 200) {
         dispatch(setFetching(false))
         dispatch(setRegister_User(response.data,true))
+    }else {
+        dispatch(setFetching(false))
+        dispatch(setRegister_User(null, false))
     }
 }
 
@@ -96,11 +99,12 @@ export const Loginization = (username, password) => async (dispatch) => {
     dispatch(setFetching(true))
     let response = await authAPI.login(username, password);
     if (response.status === 200 || 201) {
+        dispatch(setFetching(false))
         localStorage.setItem('isAuth', 'true')
         localStorage.setItem('auth_token', response.data.auth_token)
-        dispatch(setFetching(false))
         dispatch(setToken(response.data.auth_token, true, true))
     } else {
+        dispatch(setFetching(false))
         localStorage.removeItem('isAuth')
         dispatch(setToken(null, false, false))
     }
@@ -109,12 +113,13 @@ export const logoutization = () => async (dispatch) => {
     dispatch(setFetching(true))
     let response = await authAPI.logout();
     if (response.status === 204 || 201 || 200) {
+        dispatch(setFetching(false))
         localStorage.removeItem('auth_token');
-        localStorage.removeItem('isAuth')
+        localStorage.setItem('isAuth', 'true')
         dispatch(setToken(null, false, false))
-        dispatch(setFetching(false))
     } else {
-        dispatch(setToken(null, false, true))
         dispatch(setFetching(false))
+        dispatch(setToken(null, false, true))
+
     }
 }

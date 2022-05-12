@@ -52,7 +52,9 @@ export const GetAllComments = () => async (dispatch) => {
     if (response.status === 200 || 201) {
         dispatch(set_Comments(response.data, true))
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(set_Comments("error", false))
+        dispatch(set_Comments([], false))
+    }else {
+         dispatch(set_Comments([], false))
     }
 }
 export const CommentCreate = (data) => async (dispatch) => {
@@ -63,7 +65,7 @@ export const CommentCreate = (data) => async (dispatch) => {
             dispatch(commentCreateSuccess(false))
         }, 100)
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(commentCreateSuccess("Error"))
+        dispatch(commentCreateSuccess(false))
     }
 }
 export const CommentDelete = (id) => async (dispatch) => {
@@ -73,9 +75,10 @@ export const CommentDelete = (id) => async (dispatch) => {
         setTimeout(() => {
             dispatch(commentDeleteSuccess(false))
         }, 100)
-
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(commentDeleteSuccess("Error"))
+        dispatch(commentDeleteSuccess(false))
+    }else {
+        dispatch(commentDeleteSuccess(false))
     }
 }
 export const CommentUpdate = (id, data) => async (dispatch) => {
@@ -86,6 +89,6 @@ export const CommentUpdate = (id, data) => async (dispatch) => {
             dispatch(commentUpdateSuccess(false))
         }, 100)
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(commentUpdateSuccess("Error"))
+        dispatch(commentUpdateSuccess(false))
     }
 }

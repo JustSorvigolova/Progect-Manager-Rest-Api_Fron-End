@@ -22,7 +22,7 @@ export const projectReducer = (state=initialState, action) => {
     switch (action.type) {
         case SET_PROJECTS:
            return {
-               ...state,  projects: action.payload,project_set_success: true
+               ...state,  projects: action.payload, project_set_success: true
            }
         case SET_ONE_PROJECT:
            return {
@@ -63,13 +63,17 @@ export const GetAllProject =()=> async (dispatch) => {
   if (response.status === 200){
        dispatch(setProject(response.data))
   }else if(response.status === 400 || 404 || 401 || 403 || 500 || 501) {
+      dispatch(setProject([]))
       dispatch(setError("error"))
+  }else {
+      dispatch(setError("error"))
+      dispatch(setProject([]))
   }
 }
 
 export const GetOneProject =(id)=> async (dispatch) => {
   const response = await projectsAPI.get_one_project(id);
-  if (response.status=== 200){
+  if (response.status=== 200 || 201){
       dispatch(setOneProject(response.data))
   }else if(response.status === 404) {
       dispatch(setOneProject(response.data))
@@ -86,6 +90,8 @@ export const ProjectCreate= (data)=> async (dispatch)=>{
 
        }else if (response.status === 400 || 401 || 403 || 500 || 501) {
           dispatch(projectCreateSuccess(false))
+  } else {
+           dispatch(projectUpdateSuccess(false))
   }
 }
 
@@ -98,7 +104,9 @@ export const ProjectDelete= (id)=> async (dispatch)=>{
            },2000)
        }else if (response.status === 400 || 401 || 403 || 500 || 501) {
           dispatch(projectDeleteSuccess(false))
-  }
+  }else {
+           dispatch(projectUpdateSuccess(false))
+ }
 }
 
 export const ProjectUpdate= (id, data)=> async (dispatch)=>{
@@ -110,5 +118,7 @@ export const ProjectUpdate= (id, data)=> async (dispatch)=>{
            },6000)
        }else if (response.status === 400 || 401 || 403 || 500 || 501) {
           dispatch(projectUpdateSuccess(false))
-  }
+        }else {
+           dispatch(projectUpdateSuccess(false))
+       }
 }

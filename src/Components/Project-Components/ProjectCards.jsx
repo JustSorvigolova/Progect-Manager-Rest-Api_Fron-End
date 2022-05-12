@@ -34,13 +34,14 @@ export const ProjectCards = (props) => {
     let bg_card = props.status ? project_card.bg_card_true : project_card.bg_card_false
     let status = props.status ? "Completed" : "Uncompleted"
     let tasks = props.task.map(t => {
-        if (t.project === props.id && t.done === true) {
+        if (t.project === props.title && t.done === true) {
             return 1
         } else {
             return 0
         }
     })
 
+    console.log(props.task)
     let task_sum = tasks.reduce(function (sum, elem) {
         return sum + elem
     }, 0)

@@ -1,5 +1,4 @@
 import {tasksAPI} from "../Api/api";
-
 const SET_TASKS = 'task/SET_TASKS'
 const SET_ONE_TASK = 'task/SET_ONE_TASK'
 const TASK_CREATE_SUCCESS = 'task/TASK_CREATE_SUCCESS'
@@ -54,7 +53,9 @@ export const GetAllTasks = () => async (dispatch) => {
     if (response.status === 200 || 201) {
         dispatch(set_Tasks(response.data))
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(set_Tasks("error"))
+        dispatch(set_Tasks([]))
+    } else {
+        dispatch(set_Tasks([]))
     }
 }
 export const GetOneTask = (id) => async (dispatch) => {
@@ -62,7 +63,9 @@ export const GetOneTask = (id) => async (dispatch) => {
     if (response.status === 200 || 201) {
         dispatch(setOneTask(response.data))
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(setOneTask("Error"))
+        dispatch(setOneTask([]))
+    }else {
+        dispatch(setOneTask([]))
     }
 }
 export const TaskCreate = (data) => async (dispatch) => {
@@ -74,7 +77,7 @@ export const TaskCreate = (data) => async (dispatch) => {
         },3000)
 
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(taskCreateSuccess("Error"))
+        dispatch(taskCreateSuccess(false))
     }
 }
 export const TaskDelete = (id) => async (dispatch) => {
@@ -84,9 +87,8 @@ export const TaskDelete = (id) => async (dispatch) => {
         setTimeout(() => {
             dispatch(taskDeleteSuccess(false))
         }, 10)
-
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(taskDeleteSuccess("Error"))
+        dispatch(taskDeleteSuccess(false))
     }
 }
 export const TaskUpdate = (id, data) => async (dispatch) => {
@@ -97,6 +99,8 @@ export const TaskUpdate = (id, data) => async (dispatch) => {
             dispatch(taskUpdateSuccess(false))
         },3000)
     } else if (response.status === 400 || 404 || 401 || 403 || 500 || 501) {
-        dispatch(taskUpdateSuccess("Error"))
+        dispatch(taskUpdateSuccess(false))
+    }else {
+        dispatch(taskUpdateSuccess(false))
     }
 }
